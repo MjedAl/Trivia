@@ -68,8 +68,9 @@ def create_app(test_config=None):
     questions = Question.query.order_by(Question.id).all()
     categories = Category.query.order_by(Category.id).all()
 
-
-
+    paged_questions = paging_questions(request, questions)
+    if len(paged_questions) == 0 :
+      abort(404)
     return jsonify({
       'success': True,
       'questions': paging_questions(request, questions),
@@ -87,16 +88,13 @@ def create_app(test_config=None):
   def delete_question(question_id):
     try:
       question = Question.query.filter_by(id=question_id).one_or_none()
-      if not question:
-        abort(404)
-
       question.delete()
       return jsonify({
         'success': True,
         'deleted': question_id
       })
     except:
-        abort(500)
+        abort(404)
 
 
   '''
