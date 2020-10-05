@@ -132,13 +132,19 @@ class QuizView extends Component {
 
   evaluateAnswer = () => {
     const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    const answerArray = this.state.currentQuestion.answer.toLowerCase();
+    if (formatGuess===" " || formatGuess===""){
+      return false
+    }
+    // i have tried using .split() as you said but it's somehow not working with
+    // answers of multiple words even if the answer is correct :(
+    // wich was the reason i changed this in the first place
+    const answerArray = this.state.currentQuestion.answer.toLowerCase().split(' ');
     //console.log(formatGuess+"\t"+answerArray)
     return answerArray.includes(formatGuess)
   }
 
   renderCorrectAnswer(){
-    //const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
+    const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
     let evaluate =  this.evaluateAnswer()
     return(
       <div className="quiz-play-holder">
